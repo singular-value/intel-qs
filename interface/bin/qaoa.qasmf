@@ -1,0 +1,11 @@
+.malloc 2
+qubit q[0]
+qubit q[1]
+H Q[0]
+H Q[1]
+CNOT Q[0],Q[1]
+RZ(0.42) Q[1]
+CNOT Q[0],Q[1]
+RX(2.345) Q[0]
+RX(2.345) Q[1]
+ExpectationValueZZ Q[0],Q[1]

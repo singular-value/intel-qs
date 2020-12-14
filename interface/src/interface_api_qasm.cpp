@@ -130,6 +130,30 @@ unsigned long ExecuteHandler(string op, string args) {
 
     unsigned long result = 1;
 
+    if (op.rfind("RX", 0) == 0) {
+        cout << op << " [" << args << "]" <<endl;
+        psi1->ApplyRotationX(query_qubit_id(args), stod(op.substr(3, op.find(")"))));
+        return 0;
+    }
+    if (op.rfind("RZ", 0) == 0) {
+        cout << op << " [" << args << "]" <<endl;
+        psi1->ApplyRotationZ(query_qubit_id(args), stod(op.substr(3, op.find(")"))));
+        return 0;
+    }
+    if (op.rfind("ExpectationValueZZ", 0) == 0) {
+        using Type = ComplexDP;
+        Type outcome = 0.0;
+        cout << op << " [" << args << "]" <<endl;
+        int qubit1,
+            qubit2;
+        int token_end = args.find_first_of(',');
+        qubit1 = query_qubit_id(args.substr(0,token_end));
+        qubit2 = query_qubit_id(args.substr(token_end+1,args.length()));
+        outcome = psi1->ExpectationValueZZ(qubit1, qubit2, 1.0);
+        cout << outcome << endl;
+        return 0;
+    }
+
     function<long(string)> func = qufun_table[op];
 
     if(func) {
